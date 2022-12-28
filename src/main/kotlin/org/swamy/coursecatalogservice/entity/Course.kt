@@ -10,6 +10,6 @@ data class Course (
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Int?, //Defined as a Nullable since this will be DB generated
 
-    val name: String,
-    val category : String
+    var name: String,
+    var category : String
 )

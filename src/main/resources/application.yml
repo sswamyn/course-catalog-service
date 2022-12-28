@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: course-catalog-service
+message: Hello from default profile
+
+# Instead of all the profiles being defined here
+#    it is better to create separate files named as 'application-prod.yml' 'application-dev.yml'
+#  Which profile [prod; dev] is controlled by the runtime VM option -Dspring.profiles.active=prod
+#
+#---
+#spring:
+#  config:
+#    activate:
+#      on-profile: prod
+#message: Hello from 'prod' profile
+#
+#---
+#spring:
+#  config:
+#    activate:
+#      on-profile: dev
+#message: Hello from 'dev' profile
+

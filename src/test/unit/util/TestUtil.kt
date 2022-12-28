@@ -2,6 +2,7 @@ package util
 
 import org.swamy.coursecatalogservice.dto.CourseDTO
 import org.swamy.coursecatalogservice.entity.Course
+
 // import org.swamy.coursecatalogservice.entity.Instructor
 
 /*fun courseDTO(
@@ -16,30 +17,32 @@ import org.swamy.coursecatalogservice.entity.Course
 
 
 fun courseEntityList() = listOf(
-    Course(null,
-        "Build RestFul APis using SpringBoot and Kotlin", "Development"),
-    Course(null,
-        "Build Reactive Microservices using Spring WebFlux/SpringBoot", "Development"
-        ,
+    Course(
+        null,
+        "Build RestFul APis using SpringBoot and Kotlin", "Development"
     ),
-    Course(null,
-        "Wiremock for Java Developers", "Development" ,
+    Course(
+        null,
+        "Build Reactive Microservices using Spring WebFlux/SpringBoot", "Development",
+    ),
+    Course(
+        null,
+        "Wiremock for Java Developers", "Development",
     )
 )
-/*
+
 
 fun courseDTO(
     id: Int? = null,
     name: String = "Build RestFul APis using Spring Boot and Kotlin",
     category: String = "Development",
-    instructorId: Int? = 1
+//    instructorId: Int? = 1
 ) = CourseDTO(
     id,
     name,
     category,
-    instructorId
+//    instructorId
 )
-*/
 
 /*
 fun courseEntityList(instructor: Instructor? = null) = listOf(

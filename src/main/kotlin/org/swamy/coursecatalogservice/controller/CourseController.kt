@@ -22,8 +22,17 @@ class CourseController(val courseService: CourseService) {
         return courseService.addCourse(courseDTO)
     }
 
+    /* VERSION #1
     @GetMapping
     fun retrieveAllCourses(): List<CourseDTO> = courseService.retrieveAllCourses()
+    */
+
+    // Upgraded version of retreiveAll that takes an optional parameter of courseName
+    @GetMapping
+    fun retrieveAllCourses(@RequestParam("course_name", required = false) courseName : String)
+            : List<CourseDTO> = courseService.retrieveAllCourses(courseName)
+
+
 
     //update based on courseId
     @PutMapping("/{course_id}")

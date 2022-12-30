@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.web.util.UriComponentsBuilder
 import org.swamy.coursecatalogservice.dto.CourseDTO
 import org.swamy.coursecatalogservice.entity.Course
 import org.swamy.coursecatalogservice.repository.CourseRepository
@@ -64,6 +65,24 @@ class CourseControllerIntgTest {
             .returnResult()
             .responseBody
         assertEquals(3, courseDTOs!!.size)
+
+    }
+
+    @Test
+    fun retriveAllCourses_ByName() {
+        val uri = UriComponentsBuilder.fromUriString("/v1/courses")
+            .queryParam("course_name", "Kotlin")
+            .toUriString()
+
+        val courseDTOs = webTestClient
+            .get()
+            .uri(uri)
+            .exchange()
+            .expectStatus().isOk
+            .expectBodyList(CourseDTO::class.java)
+            .returnResult()
+            .responseBody
+        assertEquals(1, courseDTOs!!.size)
 
     }
 

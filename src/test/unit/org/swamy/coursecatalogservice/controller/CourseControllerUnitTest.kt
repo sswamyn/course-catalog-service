@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.test.util.AssertionErrors.assertEquals
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.test.web.reactive.server.expectBody
 import org.swamy.coursecatalogservice.dto.CourseDTO
 import org.swamy.coursecatalogservice.entity.Course
 import org.swamy.coursecatalogservice.service.CourseService
@@ -56,19 +58,48 @@ class CourseControllerUnitTest {
 
         every { courseServiceMock.addCourse(any()) } returns courseDTO(id = 1)
 
-        val savedCourseDTO = webTestClient
+        val result = webTestClient
             .post()
             .uri("/v1/courses")
             .bodyValue(courseDTO)
             .exchange()
             .expectStatus().isBadRequest
+            .expectBody(String::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("don't know!! ","[\"courseDTO.category must not be blank\",\"courseDTO.name must not be blank\"]", result)//("\n Errors: \t courseDTO.category must not be blank, courseDTO.name must not be blank", result)
 
     }
+
+    // Test the Global custom error handler exceptionhandler.GlobalErrorHandler()
+    @Test
+    fun addCourse_runtimeexception() {
+
+        val courseDTO = CourseDTO(null, "Build Restful APIs using SpringBoot and Kotlin", "Swamy")
+
+        val errorMessage = "Internal app error - Exception"
+        every { courseServiceMock.addCourse(any()) } throws RuntimeException(errorMessage)
+
+        val result = webTestClient
+            .post()
+            .uri("/v1/courses")
+            .bodyValue(courseDTO)
+            .exchange()
+            .expectStatus().is5xxServerError
+            .expectBody(String::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("don't know!! ",errorMessage, result)
+
+    }
+
 
     @Test
     fun retriveAllCourses() {
 
-        every { courseServiceMock.retrieveAllCourses() }.returnsMany(
+        every { courseServiceMock.retrieveAllCourses(any()) }.returnsMany(
             listOf(
                 courseDTO(id = 1),
                 courseDTO(id = 2, name = "Build Restful APIs using SpringBoot and Kotlin")

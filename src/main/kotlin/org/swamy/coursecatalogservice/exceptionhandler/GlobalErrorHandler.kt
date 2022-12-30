@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import org.swamy.coursecatalogservice.exception.InstructorNotValidException
 
 @Component
 @ControllerAdvice
@@ -36,6 +37,13 @@ class GlobalErrorHandler : ResponseEntityExceptionHandler() {
             .body(errors)
     }
 
+    @ExceptionHandler(InstructorNotValidException::class)
+    fun handleInstructorNotValidException(ex: InstructorNotValidException, request: WebRequest) : ResponseEntity<Any> {
+        logger.error("Internal App Exception observed : ${ex.message}", ex)
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ex.message)
+    }
     @ExceptionHandler(Exception::class)
     fun handleAllExceptions(ex: Exception, request: WebRequest) : ResponseEntity<Any> {
         logger.error("Internal App Exception observed : ${ex.message}", ex)

@@ -14,25 +14,37 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
 import org.swamy.coursecatalogservice.repository.CourseRepository
+import org.swamy.coursecatalogservice.repository.InstructorRepository
+import util.PostgreSQLContainerInitializer
 import util.courseEntityList
+import util.instructorEntity
 import java.util.stream.Stream
 import kotlin.math.exp
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DataJpaTest
 @ActiveProfiles("test")
-class CourseRepositoryIntgList {
+class CourseRepositoryIntgList : PostgreSQLContainerInitializer(){
 
     //companion object : KLogging()
     // Commented out since ONLY one companion object is allowed in a class!
     @Autowired
     lateinit var courseRepository: CourseRepository
 
+    @Autowired
+    lateinit var instructorRepository: InstructorRepository
+
     @BeforeEach
     fun setup() {
         courseRepository.deleteAll()
+        instructorRepository.deleteAll()
+
+        val instructor = instructorEntity()
+        instructorRepository.save(instructor)
+
         val courses = courseEntityList()
         courseRepository.saveAll(courses)
+
     }
 
     @Test
